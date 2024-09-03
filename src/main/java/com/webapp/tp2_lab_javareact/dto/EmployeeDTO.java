@@ -1,5 +1,6 @@
 package com.webapp.tp2_lab_javareact.dto;
 
+import com.webapp.tp2_lab_javareact.tool.NotificationMessage;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,24 +18,24 @@ public class EmployeeDTO {
     // Tanto "id" como "creationDate" no son requeridos ya que se asignan por default (DB y en el constructor)
     private Long id;
 
-    @NotBlank(message = "documentNumber is required")
+    @NotBlank(message = NotificationMessage.DOCUMENT_NUMBER_IS_REQUIRED)
     private String documentNumber;
 
-    @NotBlank(message = "name is required")
+    @NotBlank(message = NotificationMessage.NAME_IS_REQUIRED)
     private String name;
 
-    @NotBlank(message = "lastName is required")
+    @NotBlank(message = NotificationMessage.LASTNAME_IS_REQUIRED)
     private String lastName;
 
-    @NotBlank(message = "email is required")
-    @Email(message = "You must provide a valid email")
+    @NotBlank(message = NotificationMessage.EMAIL_IS_REQUIRED)
+    @Email(message = NotificationMessage.INVALID_EMAIL)
     private String email;
 
-    @NotNull(message = "birthDate is required")
-    @Past(message = "The date of birth must be in the past.")
+    @NotNull(message = NotificationMessage.BIRTH_DATE_IS_REQUIRED)
+    @Past(message = NotificationMessage.INVALID_BIRTH_DATE)
     private LocalDate birthDate;
 
-    @NotNull(message = "entryDate is required")
+    @NotNull(message = NotificationMessage.ENTRY_DATE_IS_REQUIRED)
     private LocalDate entryDate;
 
     private LocalDate creationDate;
