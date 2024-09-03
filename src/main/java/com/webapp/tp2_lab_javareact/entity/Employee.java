@@ -18,7 +18,7 @@ public class Employee {
     @Column(name = "id_employee")
     private Long id;
 
-    @Column(name = "document_number", length = 8, nullable = false)
+    @Column(name = "document_number", length = 8, nullable = false, unique = true)
     private String documentNumber;
 
     @Column(nullable = false)
@@ -27,7 +27,7 @@ public class Employee {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, unique = true)
     private String email;
 
     @Column(name = "birth_date", nullable = false)
