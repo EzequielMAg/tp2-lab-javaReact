@@ -1,5 +1,7 @@
 package com.webapp.tp2_lab_javareact.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * La clase {@code BussinessException} sirve como la clase base para todas las excepciones
  * relacionadas con la lógica de negocio en la aplicación. Es una clase abstracta, lo que
@@ -16,8 +18,19 @@ package com.webapp.tp2_lab_javareact.exception;
  * @version 1.0
  * @since 2024-09-01
  */
-public class BussinessException extends RuntimeException{
+public class BussinessException extends RuntimeException {
+
+    private HttpStatus httStatus;
+
     public BussinessException(String message) {
         super(message);
+    }
+
+    public HttpStatus getHttStatus() {
+        return this.httStatus;
+    }
+
+    public void setHttStatus(HttpStatus statusCode) {
+        this.httStatus = statusCode;
     }
 }

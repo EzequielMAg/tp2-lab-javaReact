@@ -2,35 +2,33 @@ package com.webapp.tp2_lab_javareact.service.impl;
 
 import com.webapp.tp2_lab_javareact.dto.EmployeeDTO;
 import com.webapp.tp2_lab_javareact.entity.Employee;
-
-import com.webapp.tp2_lab_javareact.exception.EntityAttributeExistsException;
 import com.webapp.tp2_lab_javareact.exception.EntityNotFoundException;
-//import jakarta.persistence.EntityNotFoundException;
-
-import com.webapp.tp2_lab_javareact.exception.RequiredAttributeException;
 import com.webapp.tp2_lab_javareact.mapper.EmployeeMapper;
 import com.webapp.tp2_lab_javareact.repository.EmployeeRepository;
 import com.webapp.tp2_lab_javareact.service.EmployeeService;
 import com.webapp.tp2_lab_javareact.tool.NotificationMessage;
+import com.webapp.tp2_lab_javareact.validation.EmployeeServiceValidation;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repository;
+    private final EmployeeServiceValidation validation;
 
-    public EmployeeServiceImpl(EmployeeRepository repository) {
+    public EmployeeServiceImpl(EmployeeRepository repository, EmployeeServiceValidation validation) {
         this.repository = repository;
+        this.validation = validation;
     }
 
     //region -----------  HTTP METHODS  -----------
     @Override
     public EmployeeDTO getEmployee(Long id) {
-
+        //TODO: mover esta validacion a EmployeeServiceValidation
         Employee entity = this.repository.findById(id).orElseThrow( () ->
                 new EntityNotFoundException( NotificationMessage.employeeNotFound(id) ));
 
@@ -45,19 +43,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
 
-        String email = employeeDTO.getEmail();
-        String documentNumber = employeeDTO.getDocumentNumber();
-
-        if (this.repository.existsByEmail(email)) {
-            throw new EntityAttributeExistsException( NotificationMessage.emailAlreadyExists(email));
-        }
-
-        if(this.repository.existsByDocumentNumber(documentNumber)) {
-            throw new EntityAttributeExistsException( NotificationMessage.dniAlreadyExists(documentNumber));
-        }
+        // Validaciones centralizadas para la creacion del empleado:
+        this.validation.validateCreateEmployee(employeeDTO);
 
         // Establece la fecha de creacion del empleado (responsabilidad del sistema)
-        employeeDTO.setCreationDate(LocalDate.now());
+        employeeDTO.setCreationDate(LocalDateTime.now());
 
         // Convierte el DTO a entidad y la guarda en la DB
         Employee employee = EmployeeMapper.dtoToEmployee(employeeDTO);
@@ -69,18 +59,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     //endregion
 
     //region -----------  BUSINESS LAYER METHODS  -----------
-    public static int calculateAge(LocalDate birthDate) {
-        LocalDate currentDate = LocalDate.now();
 
-        if (birthDate == null) {
-            throw new RequiredAttributeException( NotificationMessage.BIRTH_DATE_IS_REQUIRED );
-        }
-
-        if(birthDate.isAfter(currentDate)) {
-            throw new IllegalArgumentException( NotificationMessage.INVALID_BIRTH_DATE );
-        }
-
-        return Period.between(birthDate, currentDate).getYears(); // Calcula la diferencia en años
-    }
     //endregion
 }

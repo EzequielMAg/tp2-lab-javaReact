@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name="employees")
+@Table(name = "employees")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,7 +16,6 @@ import java.time.LocalDate;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_employee")
     private Long id;
 
     @Column(name = "document_number", length = 8, nullable = false, unique = true)
@@ -24,7 +24,7 @@ public class Employee {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
     @Column(length = 30, nullable = false, unique = true)
@@ -37,5 +37,5 @@ public class Employee {
     private LocalDate entryDate;
 
     @Column(name = "creation_date")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 }

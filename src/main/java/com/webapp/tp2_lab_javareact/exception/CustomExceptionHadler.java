@@ -49,6 +49,6 @@ public class CustomExceptionHadler extends ResponseEntityExceptionHandler {
         responseBody.put("timestamp", new Date());
         responseBody.put("message", ex.getMessage());
 
-        return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(responseBody, ex.getHttStatus());
     }
 }
