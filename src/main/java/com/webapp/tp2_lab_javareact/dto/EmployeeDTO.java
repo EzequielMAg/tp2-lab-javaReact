@@ -1,13 +1,12 @@
 package com.webapp.tp2_lab_javareact.dto;
 
 import com.webapp.tp2_lab_javareact.tool.NotificationMessage;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
+import com.webapp.tp2_lab_javareact.tool.Utility;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,13 +21,15 @@ public class EmployeeDTO {
     private String documentNumber;
 
     @NotBlank(message = NotificationMessage.NAME_IS_REQUIRED)
+    @Pattern(regexp = Utility.NAME_PATTERN, message = NotificationMessage.INVALID_NAME)
     private String name;
 
     @NotBlank(message = NotificationMessage.LASTNAME_IS_REQUIRED)
+    @Pattern(regexp = Utility.LAST_NAME_PATTERN, message = NotificationMessage.INVALID_LAST_NAME)
     private String lastName;
 
     @NotBlank(message = NotificationMessage.EMAIL_IS_REQUIRED)
-    @Email(message = NotificationMessage.INVALID_EMAIL)
+    @Pattern(regexp = Utility.EMAIL_PATTERN, message = NotificationMessage.INVALID_EMAIL)
     private String email;
 
     @NotNull(message = NotificationMessage.BIRTH_DATE_IS_REQUIRED)
@@ -38,5 +39,7 @@ public class EmployeeDTO {
     @NotNull(message = NotificationMessage.ENTRY_DATE_IS_REQUIRED)
     private LocalDate entryDate;
 
-    private LocalDate creationDate;
+    //Este atributo se ha cambiado de LocalDate a LocalDateTime para almacenar la fecha y hora del
+    // momento de la creación, tal como pide HU001.
+    private LocalDateTime creationDate;
 }
