@@ -6,27 +6,27 @@ import lombok.experimental.UtilityClass;
 public final class NotificationMessage {
 
     //region -----------  CONSTANTS: ATTRIBUTE MESSAGE REQUIRED  -----------
-    public static final String DOCUMENT_NUMBER_IS_REQUIRED = "The documentNumber is required.";
-    public static final String NAME_IS_REQUIRED = "The name is required.";
-    public static final String LASTNAME_IS_REQUIRED = "The lastName is required.";
-    public static final String EMAIL_IS_REQUIRED = "The email is required.";
-    public static final String BIRTH_DATE_IS_REQUIRED = "The birthDate is required.";
-    public static final String ENTRY_DATE_IS_REQUIRED = "The entryDate is required.";
+    public static final String DOCUMENT_NUMBER_IS_REQUIRED = "'documentNumber' is required.";
+    public static final String NAME_IS_REQUIRED = "'name' is required.";
+    public static final String LASTNAME_IS_REQUIRED = "'lastName' is required.";
+    public static final String EMAIL_IS_REQUIRED = "'email' is required.";
+    public static final String BIRTH_DATE_IS_REQUIRED = "'birthDate' is required.";
+    public static final String ENTRY_DATE_IS_REQUIRED = "'entryDate' is required.";
     //endregion
 
     //region -----------  CONSTANTS: INVALID ATTRIBUTE MESSAGE  -----------
-    public static final String INVALID_EMAIL = "You must provide a valid email.";
-    public static final String INVALID_BIRTH_DATE = "The date of birth must be before the current date.";
+    public static final String INVALID_NAME = "Only letters are allowed in the 'name' field";
+    public static final String INVALID_LAST_NAME = "Only letters are allowed in the 'lastName' field";
+    public static final String INVALID_EMAIL = "The email entered is not correct.";
+    public static final String INVALID_BIRTH_DATE = "The date of birth cannot be after today's date.";
+    public static final String UNDERAGE_EMPLOYEE = "The employee's age cannot be less than 18 years.";
+    public static final String INVALID_ENTRY_DATE = "The entry date cannot be after today's date.";
     //endregion
 
-    //region -----------  METHODS THAT RETURN A MESSAGE: ATTRIBUTE ALREADY EXISTS  -----------
-    public String emailAlreadyExists(String email) {
-        return "¡The email " + email + " already exists!";
-    }
+    //region -----------  CONSTANTS: ATTRIBUTE ALREADY EXISTS  -----------
+    public static final String EMAIL_ALREADY_EXISTS = "An employee with the entered email already exists.";
 
-    public String dniAlreadyExists(String dni) {
-        return "¡The documentNumber " + dni + " already exists!";
-    }
+    public static final String DNI_ALREADY_EXISTS = "There is already an employee with the document entered.";
     //endregion
 
     //region OTHERS METHODS THAT RETURN A MESSAGE
