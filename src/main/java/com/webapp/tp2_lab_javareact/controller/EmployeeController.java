@@ -33,11 +33,15 @@ public class EmployeeController {
     }
 
     @PostMapping()
-    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO dto) {
+        dto = this.employeeService.createEmployee(dto);
+        return ResponseEntity.created(URI.create( "/employee/" + dto.getId() )).body(dto);
+    }
 
-        employeeDTO = this.employeeService.createEmployee(employeeDTO);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO dto) {
 
-        return ResponseEntity.created(URI.create( "/employee/" + employeeDTO.getId() )).body(employeeDTO);
+        return ResponseEntity.ok(this.employeeService.updateEmployee(id, dto));
     }
 
 

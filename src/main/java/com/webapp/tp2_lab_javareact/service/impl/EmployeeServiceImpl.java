@@ -2,12 +2,11 @@ package com.webapp.tp2_lab_javareact.service.impl;
 
 import com.webapp.tp2_lab_javareact.dto.EmployeeDTO;
 import com.webapp.tp2_lab_javareact.entity.Employee;
-import com.webapp.tp2_lab_javareact.exception.EntityNotFoundException;
 import com.webapp.tp2_lab_javareact.mapper.EmployeeMapper;
 import com.webapp.tp2_lab_javareact.repository.EmployeeRepository;
 import com.webapp.tp2_lab_javareact.service.EmployeeService;
-import com.webapp.tp2_lab_javareact.tool.NotificationMessage;
 import com.webapp.tp2_lab_javareact.validation.EmployeeServiceValidation;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,10 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     //region -----------  HTTP METHODS  -----------
     @Override
     public EmployeeDTO getEmployee(Long id) {
-        //TODO: mover esta validacion a EmployeeServiceValidation
-        Employee entity = this.repository.findById(id).orElseThrow( () ->
-                new EntityNotFoundException( NotificationMessage.employeeNotFound(id) ));
-
+        Employee entity = this.validation.validateFindById(id);
         return EmployeeMapper.employeeToDto(entity);
     }
 
@@ -42,19 +38,33 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
-        // Validaciones centralizadas para la creacion del empleado:
-        this.validation.validateCreateEmployee(employeeDTO);
-
-        // Establece la fecha de creacion del empleado (responsabilidad del sistema)
-        employeeDTO.setCreationDate(LocalDateTime.now());
+        this.validation.validateCreateEmployee(employeeDTO); // Validaciones centralizadas para la creacion del empleado
+        employeeDTO.setCreationDate(LocalDateTime.now()); // Establece la fecha de creacion (responsabilidad del sistema)
 
         // Convierte el DTO a entidad y la guarda en la DB
         Employee employee = EmployeeMapper.dtoToEmployee(employeeDTO);
         employee = this.repository.save( employee );
 
-        // Convierte la entidad guardada de vuelta a DTO y la retorna
-        return EmployeeMapper.employeeToDto(employee);
+        return EmployeeMapper.employeeToDto(employee); // Convierte la entidad guardada de vuelta a DTO y la retorna
     }
+
+    @Override
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO dto) {
+
+        Employee employeeToModify = this.validation.validateUpdateEmployee(id, dto);
+
+        employeeToModify.setDocumentNumber(dto.getDocumentNumber());
+        employeeToModify.setName(dto.getName());
+        employeeToModify.setLastName(dto.getLastName());
+        employeeToModify.setEmail(dto.getEmail());
+        employeeToModify.setBirthDate(dto.getBirthDate());
+        employeeToModify.setEntryDate(dto.getEntryDate());
+
+        Employee employeeSaved = this.repository.save(employeeToModify);
+        return EmployeeMapper.employeeToDto(employeeSaved);
+    }
+
     //endregion
 }
