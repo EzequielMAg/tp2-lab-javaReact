@@ -10,9 +10,9 @@ import com.webapp.tp2_lab_javareact.tool.NotificationMessage;
 import com.webapp.tp2_lab_javareact.validation.EmployeeServiceValidation;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -37,12 +37,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDTO> getEmployees() {
-        return null;
+        List<Employee> employees = this.repository.findAll();
+        return employees.stream().map(EmployeeMapper::employeeToDto).collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
-
         // Validaciones centralizadas para la creacion del empleado:
         this.validation.validateCreateEmployee(employeeDTO);
 
@@ -56,9 +56,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         // Convierte la entidad guardada de vuelta a DTO y la retorna
         return EmployeeMapper.employeeToDto(employee);
     }
-    //endregion
-
-    //region -----------  BUSINESS LAYER METHODS  -----------
-
     //endregion
 }

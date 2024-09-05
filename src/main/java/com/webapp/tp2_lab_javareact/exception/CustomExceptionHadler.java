@@ -26,17 +26,17 @@ public class CustomExceptionHadler extends ResponseEntityExceptionHandler {
             MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
+        final int statusCode = status.value();
         Map<String, Object> responseBody = new LinkedHashMap<>();
-        responseBody.put("timestamp", new Date());
-        responseBody.put("status", status.value());
+
+        responseBody.put("Status Code", statusCode + " (" + HttpStatus.valueOf(statusCode).getReasonPhrase() + ")");
 
         List<String> errors = ex.getBindingResult().getFieldErrors()
                 .stream()
-                //.map(x -> x.getDefaultMessage())
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
 
-        responseBody.put("errors", errors);
+        responseBody.put("Message", errors);
 
         return new ResponseEntity<>(responseBody, headers, status);
     }
@@ -46,7 +46,8 @@ public class CustomExceptionHadler extends ResponseEntityExceptionHandler {
             BussinessException ex, WebRequest request
     ) {
         Map<String, Object> responseBody = new LinkedHashMap<>();
-        responseBody.put("timestamp", new Date());
+        //responseBody.put("timestamp", new Date());
+        responseBody.put("Status Code", ex.getHttStatus().value() + " (" + ex.getHttStatus().getReasonPhrase() + ")");
         responseBody.put("message", ex.getMessage());
 
         return new ResponseEntity<>(responseBody, ex.getHttStatus());

@@ -37,6 +37,7 @@ public class EmployeeDTO {
     private LocalDate birthDate;
 
     @NotNull(message = NotificationMessage.ENTRY_DATE_IS_REQUIRED)
+    @Past(message = NotificationMessage.INVALID_ENTRY_DATE)
     private LocalDate entryDate;
 
     //Este atributo se ha cambiado de LocalDate a LocalDateTime para almacenar la fecha y hora del

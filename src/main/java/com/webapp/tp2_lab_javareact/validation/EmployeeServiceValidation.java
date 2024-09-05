@@ -34,10 +34,6 @@ public class EmployeeServiceValidation {
         if (this.repository.existsByEmail(employeeDTO.getEmail())) {
             throw new EntityAttributeExistsException( NotificationMessage.EMAIL_ALREADY_EXISTS );
         }
-
-        if(employeeDTO.getEntryDate().isAfter(LocalDate.now())) {
-            throw new InvalidAttributeException( NotificationMessage.INVALID_ENTRY_DATE );
-        }
     }
 
     private static int calculateAge(LocalDate birthDate) {
