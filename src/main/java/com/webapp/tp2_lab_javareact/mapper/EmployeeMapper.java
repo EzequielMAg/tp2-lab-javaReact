@@ -20,6 +20,8 @@ public class EmployeeMapper {
                 .build();
     }
 
+    //TODO: como voy a cambiar a LocalDate para mostrar como pide la docu, del LocalDateTime de la entity
+    //      tengo que agarrar solo la fecha en este mapper
     public EmployeeDTO employeeToDto(Employee employee) {
         return EmployeeDTO.builder()
                 .id(employee.getId())

@@ -36,6 +36,6 @@ public class Employee {
     @Column(name = "entry_date", nullable = false)
     private LocalDate entryDate;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 }

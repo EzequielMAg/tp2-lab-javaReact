@@ -42,5 +42,5 @@ public class EmployeeDTO {
 
     //Este atributo se ha cambiado de LocalDate a LocalDateTime para almacenar la fecha y hora del
     // momento de la creación, tal como pide HU001.
-    private LocalDateTime creationDate;
+    private LocalDateTime creationDate; //TODO: cambiar a LocalDate para mostrar como puide la docu
 }
