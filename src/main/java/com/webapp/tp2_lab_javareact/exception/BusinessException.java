@@ -18,11 +18,11 @@ import org.springframework.http.HttpStatus;
  * @version 1.0
  * @since 2024-09-01
  */
-public class BussinessException extends RuntimeException {
+public class BusinessException extends RuntimeException {
 
     private HttpStatus httStatus;
 
-    public BussinessException(String message) {
+    public BusinessException(String message) {
         super(message);
     }
 

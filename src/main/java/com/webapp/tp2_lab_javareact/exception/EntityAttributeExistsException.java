@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
  * <p>Se espera que este tipo de excepción sea manejado por las capas de servicio
  * o controlador para proporcionar una respuesta adecuada al cliente.</p>
  */
-public class EntityAttributeExistsException extends BussinessException {
+public class EntityAttributeExistsException extends BusinessException {
 
     public EntityAttributeExistsException(String message) {
         super(message);

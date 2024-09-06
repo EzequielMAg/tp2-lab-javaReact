@@ -1,6 +1,5 @@
 package com.webapp.tp2_lab_javareact.exception;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +39,9 @@ public class CustomExceptionHadler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(responseBody, headers, status);
     }
 
-    @ExceptionHandler({BussinessException.class})
+    @ExceptionHandler({BusinessException.class})
     public ResponseEntity<Object> handleBussinessException (
-            BussinessException ex, WebRequest request
+            BusinessException ex, WebRequest request
     ) {
         Map<String, Object> responseBody = new LinkedHashMap<>();
         //responseBody.put("timestamp", new Date());

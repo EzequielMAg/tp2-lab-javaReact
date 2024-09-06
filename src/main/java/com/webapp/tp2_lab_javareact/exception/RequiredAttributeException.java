@@ -1,9 +1,8 @@
 package com.webapp.tp2_lab_javareact.exception;
 
-import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.http.HttpStatus;
 
-public class RequiredAttributeException extends BussinessException {
+public class RequiredAttributeException extends BusinessException {
 
     public RequiredAttributeException(String message) {
         super(message);

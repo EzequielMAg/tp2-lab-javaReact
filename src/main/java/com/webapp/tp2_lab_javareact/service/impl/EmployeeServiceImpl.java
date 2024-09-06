@@ -6,7 +6,6 @@ import com.webapp.tp2_lab_javareact.mapper.EmployeeMapper;
 import com.webapp.tp2_lab_javareact.repository.EmployeeRepository;
 import com.webapp.tp2_lab_javareact.service.EmployeeService;
 import com.webapp.tp2_lab_javareact.validation.EmployeeServiceValidation;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,11 +23,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.validation = validation;
     }
 
-    //region -----------  HTTP METHODS  -----------
     @Override
     public EmployeeDTO getEmployee(Long id) {
-        Employee entity = this.validation.validateFindById(id);
-        return EmployeeMapper.employeeToDto(entity);
+        Employee employee = this.validation.validateFindById(id);
+        return EmployeeMapper.employeeToDto(employee);
     }
 
     @Override
@@ -38,7 +36,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    @Transactional
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
         this.validation.validateCreateEmployee(employeeDTO); // Validaciones centralizadas para la creacion del empleado
         employeeDTO.setCreationDate(LocalDateTime.now()); // Establece la fecha de creacion (responsabilidad del sistema)
@@ -66,5 +63,4 @@ public class EmployeeServiceImpl implements EmployeeService {
         return EmployeeMapper.employeeToDto(employeeSaved);
     }
 
-    //endregion
 }

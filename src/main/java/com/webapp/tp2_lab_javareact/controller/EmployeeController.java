@@ -3,7 +3,6 @@ package com.webapp.tp2_lab_javareact.controller;
 import com.webapp.tp2_lab_javareact.dto.EmployeeDTO;
 import com.webapp.tp2_lab_javareact.service.EmployeeService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,7 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EmployeeDTO> getEmployee(@NotNull @PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable Long id) {
         EmployeeDTO employee = this.employeeService.getEmployee(id);
         return ResponseEntity.ok(employee);
     }
