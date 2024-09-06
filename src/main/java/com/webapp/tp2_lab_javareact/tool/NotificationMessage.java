@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 public final class NotificationMessage {
 
     //region -----------  CONSTANTS: ATTRIBUTE MESSAGE REQUIRED  -----------
+    //region -----------  EMPLOYEE  -----------
     public static final String DOCUMENT_NUMBER_IS_REQUIRED = "'documentNumber' is required.";
     public static final String NAME_IS_REQUIRED = "'name' is required.";
     public static final String LASTNAME_IS_REQUIRED = "'lastName' is required.";
@@ -14,13 +15,23 @@ public final class NotificationMessage {
     public static final String ENTRY_DATE_IS_REQUIRED = "'entryDate' is required.";
     //endregion
 
+    // -----------  WORK SHIFT  -----------
+    public static final String EMPLOYEE_ID_IS_REQUIRED = "'employeeId' is required.";
+    public static final String CONCEPT_ID_IS_REQUIRED = "'conceptId' is required.";
+    public static final String DATE_IS_REQUIRED = "'date' of the work shift is required.";
+
+    //endregion
+    //endregion
+
     //region -----------  CONSTANTS: INVALID ATTRIBUTE MESSAGE  -----------
-    public static final String INVALID_NAME = "Only letters are allowed in the 'name' field";
-    public static final String INVALID_LAST_NAME = "Only letters are allowed in the 'lastName' field";
+    public static final String INVALID_NAME = "Only letters are allowed in the 'name' field.";
+    public static final String INVALID_LAST_NAME = "Only letters are allowed in the 'lastName' field.";
     public static final String INVALID_EMAIL = "The email entered is not correct.";
     public static final String INVALID_BIRTH_DATE = "The date of birth cannot be after today's date.";
     public static final String UNDERAGE_EMPLOYEE = "The employee's age cannot be less than 18 years.";
     public static final String INVALID_ENTRY_DATE = "The entry date cannot be after today's date.";
+
+    public static final String INVALID_WORK_SHIFT_DATE = "The work shift date cannot be after today's date.";
     //endregion
 
     //region -----------  CONSTANTS: ATTRIBUTE ALREADY EXISTS  -----------
