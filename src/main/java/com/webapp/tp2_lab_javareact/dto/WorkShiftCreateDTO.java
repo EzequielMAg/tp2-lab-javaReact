@@ -1,15 +1,19 @@
 package com.webapp.tp2_lab_javareact.dto;
 
-
 import com.webapp.tp2_lab_javareact.tool.NotificationMessage;
 import com.webapp.tp2_lab_javareact.tool.Utility;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
+import lombok.*;
 
-import javax.management.Notification;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class WorkShiftCreateDTO {
     @NotNull(message = NotificationMessage.EMPLOYEE_ID_IS_REQUIRED)
     private Long employeeId;
