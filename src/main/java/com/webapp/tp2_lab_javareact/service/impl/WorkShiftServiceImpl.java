@@ -29,7 +29,7 @@ public class WorkShiftServiceImpl implements WorkShiftService {
         // Validar que exista el concepto laboral o arroja EntityNotFoundException
         LaboralConcept laboralConcept = this.validation.validateLaboralConceptById(requestDTO.getConceptId());
 
-        // Validaciones (respecto a las reglas de negocio) centralizadas para la creacion de la jornada laboral
+        // Validaciones (respecto a las reglas de negocio e/ otras) centralizadas para la creacion de la jornada laboral
         this.validation.validateCreateWorkShift(requestDTO, laboralConcept);
 
         // Convierte el DTO a entidad y la guarda en la DB

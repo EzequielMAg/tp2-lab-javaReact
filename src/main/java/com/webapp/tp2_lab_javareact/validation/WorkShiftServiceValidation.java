@@ -31,16 +31,11 @@ public class WorkShiftServiceValidation {
 
     public void validateCreateWorkShift(WorkShiftCreateDTO requestDTO, LaboralConcept laboralConcept)
             throws  RequiredAttributeException, InvalidAttributeException {
-        String nameConcept = laboralConcept.getName();
-        Integer workedHours = requestDTO.getHoursWorked();
-
         // VALIDACIONES DE LOS CRITERIOS DE ACEPTACION
-       this.validateNormalShiftAndExtraShift(nameConcept, workedHours);
-       this.validateFreeDay(nameConcept, workedHours);
+        this.validateWorkedHoursByWorkday(laboralConcept.isWorkDay(), requestDTO.getHoursWorked());
 
         // VALIDACIONES DE LAS REGLAS DE NEGOCIO
-
-
+        this.businessRulesValidations(requestDTO, laboralConcept);
     }
 
     public WorkShift validateFindById(Long id) throws EntityNotFoundException {
@@ -57,19 +52,20 @@ public class WorkShiftServiceValidation {
                 new EntityNotFoundException( NotificationMessage.laboralConceptNotFound(conceptId) ));
     }
 
-    private void validateNormalShiftAndExtraShift(String nameConcept, Integer hours) {
-        if(nameConcept.equalsIgnoreCase("Turno Normal") || nameConcept.equalsIgnoreCase("Turno Extra")) {
+    private void validateWorkedHoursByWorkday(Boolean isWorkDay, Integer hours) throws RequiredAttributeException {
+        //if(nameConcept.equalsIgnoreCase("Turno Normal") || nameConcept.equalsIgnoreCase("Turno Extra")) {
+        if(isWorkDay) {
             if(hours == null) {
                 throw new RequiredAttributeException( NotificationMessage.HOURS_WORKED_IS_REQUIRED );
             }
-        }
-    }
-
-    private void validateFreeDay(String nameConcept, Integer hours) {
-        if(nameConcept.equalsIgnoreCase("Día Libre")) {
+        } else {
             if(hours != null) {
                 throw new InvalidAttributeException( NotificationMessage.HOURS_WORKED_IS_NOT_REQUIRED );
             }
         }
+    }
+
+    private void businessRulesValidations(WorkShiftCreateDTO requestDTO, LaboralConcept laboralConcept) {
+
     }
 }
