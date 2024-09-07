@@ -26,5 +26,5 @@ public class WorkShiftCreateDTO {
     private LocalDate date;
 
     //@Pattern(regexp = Utility.POSITIVE_INTEGER_PATTERN) //TODO: llevar este patron a todos los demas DTO's
-    private int hoursWorked;
+    private Integer hoursWorked;
 }

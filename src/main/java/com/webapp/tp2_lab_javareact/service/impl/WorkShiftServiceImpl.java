@@ -23,14 +23,14 @@ public class WorkShiftServiceImpl implements WorkShiftService {
 
     @Override
     public WorkShiftResponseDTO createWorkShift(WorkShiftCreateDTO requestDTO) {
-        // Validaciones (respecto a las reglas de negocio) centralizadas para la creacion de la jornada laboral
-        this.validation.validateCreateWorkShift(requestDTO);
-
         // Validar que exista el empleado o arroja EntityNotFoundException
         Employee employee = this.validation.validateEmployeeFindById(requestDTO.getEmployeeId());
 
         // Validar que exista el concepto laboral o arroja EntityNotFoundException
         LaboralConcept laboralConcept = this.validation.validateLaboralConceptById(requestDTO.getConceptId());
+
+        // Validaciones (respecto a las reglas de negocio) centralizadas para la creacion de la jornada laboral
+        this.validation.validateCreateWorkShift(requestDTO, laboralConcept);
 
         // Convierte el DTO a entidad y la guarda en la DB
         WorkShift workShift = WorkShiftMapper.dtoToWorkShift(requestDTO, employee, laboralConcept);

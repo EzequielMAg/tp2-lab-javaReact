@@ -19,9 +19,11 @@ public final class NotificationMessage {
     public static final String EMPLOYEE_ID_IS_REQUIRED = "'employeeId' is required.";
     public static final String CONCEPT_ID_IS_REQUIRED = "'conceptId' is required.";
     public static final String DATE_IS_REQUIRED = "'date' of the work shift is required.";
+    public static final String HOURS_WORKED_IS_REQUIRED = "'hoursWorked'is required for the entered concept.";
+    //endregion
+    //endregion
 
-    //endregion
-    //endregion
+    public static final String HOURS_WORKED_IS_NOT_REQUIRED = "The concept entered does not require the entry of 'hoursWorked'";
 
     //region -----------  CONSTANTS: INVALID ATTRIBUTE MESSAGE  -----------
     public static final String INVALID_NAME = "Only letters are allowed in the 'name' field.";

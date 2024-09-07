@@ -21,5 +21,5 @@ public class WorkShiftResponseDTO {
 
     private String conceptName;
 
-    private int hoursWorked;
+    private Integer hoursWorked;
 }
