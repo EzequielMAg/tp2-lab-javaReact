@@ -6,6 +6,6 @@ public class EntityNotFoundException extends BusinessException {
 
     public EntityNotFoundException(String message) {
         super(message);
-        super.setHttStatus(HttpStatus.NOT_FOUND);
+        super.setStatusCode(HttpStatus.NOT_FOUND);
     }
 }

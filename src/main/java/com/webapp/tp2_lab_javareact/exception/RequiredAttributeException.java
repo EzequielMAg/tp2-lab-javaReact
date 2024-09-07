@@ -6,6 +6,5 @@ public class RequiredAttributeException extends BusinessException {
 
     public RequiredAttributeException(String message) {
         super(message);
-        super.setHttStatus(HttpStatus.BAD_REQUEST);
     }
 }

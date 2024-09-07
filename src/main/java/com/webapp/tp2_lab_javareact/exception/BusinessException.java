@@ -20,17 +20,17 @@ import org.springframework.http.HttpStatus;
  */
 public class BusinessException extends RuntimeException {
 
-    private HttpStatus httStatus;
+    private HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
     public BusinessException(String message) {
         super(message);
     }
 
-    public HttpStatus getHttStatus() {
-        return this.httStatus;
+    public HttpStatus getStatusCode() {
+        return this.statusCode;
     }
 
-    public void setHttStatus(HttpStatus statusCode) {
-        this.httStatus = statusCode;
+    public void setStatusCode(HttpStatus statusCode) {
+        this.statusCode = statusCode;
     }
 }

@@ -4,6 +4,7 @@ import com.webapp.tp2_lab_javareact.dto.WorkShiftCreateDTO;
 import com.webapp.tp2_lab_javareact.entity.Employee;
 import com.webapp.tp2_lab_javareact.entity.LaboralConcept;
 import com.webapp.tp2_lab_javareact.entity.WorkShift;
+import com.webapp.tp2_lab_javareact.exception.BusinessException;
 import com.webapp.tp2_lab_javareact.exception.EntityNotFoundException;
 import com.webapp.tp2_lab_javareact.exception.InvalidAttributeException;
 import com.webapp.tp2_lab_javareact.exception.RequiredAttributeException;
@@ -31,7 +32,7 @@ public class WorkShiftServiceValidation {
 
     public void validateCreateWorkShift(WorkShiftCreateDTO requestDTO, LaboralConcept laboralConcept)
             throws  RequiredAttributeException, InvalidAttributeException {
-        // VALIDACIONES DE LOS CRITERIOS DE ACEPTACION
+        // DEMAS VALIDACIONES DE LOS CRITERIOS DE ACEPTACION
         this.validateWorkedHoursByWorkday(laboralConcept.isWorkDay(), requestDTO.getHoursWorked());
 
         // VALIDACIONES DE LAS REGLAS DE NEGOCIO
@@ -66,6 +67,19 @@ public class WorkShiftServiceValidation {
     }
 
     private void businessRulesValidations(WorkShiftCreateDTO requestDTO, LaboralConcept laboralConcept) {
-
+        this.validateWorkedHoursRange(laboralConcept, requestDTO.getHoursWorked());
     }
+
+    private void validateWorkedHoursRange(LaboralConcept laboralConcept, Integer hoursWorked) {
+        if(laboralConcept.isWorkDay()) {
+            Integer minimumHours = laboralConcept.getMinimumHours();
+            Integer maximumHours = laboralConcept.getMaximumHours();
+
+            if(hoursWorked < minimumHours || hoursWorked > maximumHours) {
+                throw new BusinessException( NotificationMessage.workedHoursOutOfRange(minimumHours, maximumHours) );
+            }
+        }
+    }
+
+
 }

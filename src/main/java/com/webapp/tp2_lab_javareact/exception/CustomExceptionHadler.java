@@ -45,9 +45,9 @@ public class CustomExceptionHadler extends ResponseEntityExceptionHandler {
     ) {
         Map<String, Object> responseBody = new LinkedHashMap<>();
         //responseBody.put("timestamp", new Date());
-        responseBody.put("Status Code", ex.getHttStatus().value() + " (" + ex.getHttStatus().getReasonPhrase() + ")");
+        responseBody.put("Status Code", ex.getStatusCode().value() + " (" + ex.getStatusCode().getReasonPhrase() + ")");
         responseBody.put("message", ex.getMessage());
 
-        return new ResponseEntity<>(responseBody, ex.getHttStatus());
+        return new ResponseEntity<>(responseBody, ex.getStatusCode());
     }
 }

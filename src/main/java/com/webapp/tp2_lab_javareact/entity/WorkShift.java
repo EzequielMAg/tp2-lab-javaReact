@@ -28,6 +28,6 @@ public class WorkShift {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(name = "hours_worked", nullable = false)
-    private int hoursWorked;
+    @Column(name = "hours_worked")
+    private Integer hoursWorked;
 }

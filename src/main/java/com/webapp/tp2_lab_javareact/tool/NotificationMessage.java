@@ -58,6 +58,12 @@ public final class NotificationMessage {
     public String workShiftNotFound(Long id) {
         return "¡The work shift with id '" + id + "' was not found!";
     }
+
+    public String workedHoursOutOfRange(Integer minimunHours, Integer maximumHours) {
+        return  "The range of hours that can be charged for this concept is " + minimunHours + " - " + maximumHours + ".";
+    }
+
+
     //endregion
 
 }

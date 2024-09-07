@@ -19,6 +19,6 @@ public class EntityAttributeExistsException extends BusinessException {
 
     public EntityAttributeExistsException(String message) {
         super(message);
-        super.setHttStatus(HttpStatus.CONFLICT);
+        super.setStatusCode(HttpStatus.CONFLICT);
     }
 }
