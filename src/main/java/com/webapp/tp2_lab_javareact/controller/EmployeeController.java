@@ -33,8 +33,8 @@ public class EmployeeController {
 
     @PostMapping()
     public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO dto) {
-        dto = this.employeeService.createEmployee(dto);
-        return ResponseEntity.created(URI.create( "/employee/" + dto.getId() )).body(dto);
+        EmployeeDTO savedDto = this.employeeService.createEmployee(dto);
+        return ResponseEntity.created(URI.create( "/employee/" + savedDto.getId() )).body(savedDto);
     }
 
     @PutMapping(value = "/{id}")

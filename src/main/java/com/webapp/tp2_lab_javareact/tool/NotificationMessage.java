@@ -52,6 +52,10 @@ public final class NotificationMessage {
     public String laboralConceptNotFound(String name) {
         return "¡The laboral concept with name '" + name + "' was not found!";
     }
+
+    public String workShiftNotFound(Long id) {
+        return "¡The work shift with id '" + id + "' was not found!";
+    }
     //endregion
 
 }

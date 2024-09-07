@@ -22,9 +22,9 @@ public class WorkShiftCreateDTO {
     private Long conceptId;
 
     @NotNull(message = NotificationMessage.DATE_IS_REQUIRED)
-    @Past(message = NotificationMessage.INVALID_WORK_SHIFT_DATE)
+    //@Past(message = NotificationMessage.INVALID_WORK_SHIFT_DATE)
     private LocalDate date;
 
-    @Pattern(regexp = Utility.POSITIVE_INTEGER_PATTERN) //TODO: llevar este patron a todos los demas DTO's
+    //@Pattern(regexp = Utility.POSITIVE_INTEGER_PATTERN) //TODO: llevar este patron a todos los demas DTO's
     private int hoursWorked;
 }

@@ -9,12 +9,12 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class WorkShiftMapper {
-    public WorkShift dtoToWorkShift(WorkShiftCreateDTO dto, Employee employee, LaboralConcept concept) {
+    public WorkShift dtoToWorkShift(WorkShiftCreateDTO requestDTO, Employee employee, LaboralConcept concept) {
         return WorkShift.builder()
                 .employee(employee)
                 .concept(concept)
-                .date(dto.getDate())
-                .hoursWorked(dto.getHoursWorked())
+                .date(requestDTO.getDate())
+                .hoursWorked(requestDTO.getHoursWorked())
                 .build();
     }
 
