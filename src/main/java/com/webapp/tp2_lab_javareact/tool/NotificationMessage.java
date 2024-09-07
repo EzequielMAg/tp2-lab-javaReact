@@ -26,10 +26,13 @@ public final class NotificationMessage {
     public static final String HOURS_WORKED_IS_NOT_REQUIRED = "The concept entered does not require the entry of 'hoursWorked'";
     public static final String WORK_HOURS_LIMIT_EXCEEDED = "An employee cannot work more than 14 hours in a single day.";
     public static final String WEEKLY_HOURS_LIMIT_EXCEEDED = "The entered employee exceeds the 52-hour weekly limit.";
-
     public static final String MONTHLY_HOURS_LIMIT_EXCEEDED = "The entered employee exceeds the 190-hour monthly limit.";
-
     public static final String EMPLOYEE_ALREADY_HAS_DAY_OFF = "The entered employee already has a day off on that date.";
+    public static final String EMPLOYEE_HAS_3_EXTRA_SHIFTS_THIS_WEEK = "The entered employee already has 3 extra shifts this week.";
+    public static final String EMPLOYEE_HAS_5_NORMAL_SHIFTS_THIS_WEEK = "The entered employee already has 5 normal shifts this week.";
+    public static final String NO_MORE_DAY_OFFS_AVAILABLE_THIS_WEEK = "The employee has no more day offs available this week.";
+    public static final String NO_MORE_DAY_OFFS_AVAILABLE_THIS_MONTH = "The employee has no more day offs available this month.";
+    public static final String EMPLOYEES_ALREADY_REGISTERED_FOR_CONCEPT_ON_DATE = "There are already 2 employees registered for this concept on the entered date.";
 
     public static final String DUPLICATE_SHIFT_FOR_DATE = "The employee already has a shift with this concept registered on the entered date.";
 

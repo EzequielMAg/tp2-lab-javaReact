@@ -82,8 +82,13 @@ public class WorkShiftServiceValidation {
         //this.validateMaxWorkedHoursPerDay(requestDTO);   // 2
         //this.validateWeeklyHours(requestDTO); // 3    // Para probar en postman + rapido comente las 2 lineas anteriores
         this.validateMonthlyHours(requestDTO);  // 4    // Para probar en postman + rapido comente las 3 lineas anteriores
+        this.validateDayOff(employeeId, workShiftDate);   // 5
+        this.validateWeeklyExtraShifts(employeeId, workShiftDate);  // 6
+        this.validateWeeklyNormalShifts(employeeId, workShiftDate); // 7
+        this.validateWeeklyDaysOff(employeeId, workShiftDate);  // 8
+        this.validateMonthlyDaysOff(employeeId, workShiftDate);  // 9
 
-        this.validateDayOff(workShiftDate, employeeId);   // 5
+        this.validateMaxEmployeesPerConceptPerDay(laboralConcept.getId(), workShiftDate);   // 10
 
         this.validateUniqueWorkShiftPerDay(workShiftDate, employeeId, conceptName); // 11
     }
@@ -110,7 +115,7 @@ public class WorkShiftServiceValidation {
         if(requestDTO.getHoursWorked() != null) {
             final int MAX_WORKED_HOURS = 14;
             List<WorkShift> workShiftListOfDay = this.workShiftRepository.
-                    findByDateAndEmployeeId(requestDTO.getDate(), requestDTO.getEmployeeId());
+                    findByEmployeeIdAndDate(requestDTO.getEmployeeId(), requestDTO.getDate());
 
             if (!workShiftListOfDay.isEmpty()) {
                 int totalHours = this.calculateTotalHoursWorked(workShiftListOfDay, requestDTO.getHoursWorked());
@@ -122,18 +127,28 @@ public class WorkShiftServiceValidation {
         }
     }   // 2
 
+    private List<WorkShift> getWeeklyShiftsOfAnEmployeeByDate(Long employeeId, LocalDate date) {
+        // Calcula el rango de fechas para la semana
+        LocalDate startOfWeek = Utility.getStartOfWeek(date);
+        LocalDate endOfWeek = Utility.getEndOfWeek(date);
+
+        return this.workShiftRepository.findByEmployeeIdAndDateBetween(employeeId, startOfWeek, endOfWeek);
+    }
+
+    private List<WorkShift> getMonthlyShiftsOfAnEmployeeByDate(Long employeeId, LocalDate date) {
+        LocalDate startOfMonth = Utility.getStartOfMonth(date);
+        LocalDate endOfMonth = Utility.getEndOfMonth(date);
+
+        return this.workShiftRepository.findByEmployeeIdAndDateBetween(employeeId, startOfMonth, endOfMonth);
+    }
+
     private void validateWeeklyHours(WorkShiftCreateDTO requestDTO) throws BusinessException {
         // Si horas trabajadas es null -> no tiene sentido sumarla con el resto para calcular si es > 52hs
         if(requestDTO.getHoursWorked() != null) {
             final int WEEKLY_HOURS_LIMIT = 52;
 
-            // Calcula el rango de fechas para la semana
-            LocalDate startOfWeek = Utility.getStartOfWeek(requestDTO.getDate());
-            LocalDate endOfWeek = Utility.getEndOfWeek(requestDTO.getDate());
-
-            // Recupera todas las jornadas laborales del empleado en la misma semana
-            List<WorkShift> workShiftListOfWeek = this.workShiftRepository.
-                    findByEmployeeIdAndDateBetween(requestDTO.getEmployeeId(), startOfWeek, endOfWeek);
+           // Recupera todas las jornadas laborales del empleado en la misma semana
+            List<WorkShift> workShiftListOfWeek = this.getWeeklyShiftsOfAnEmployeeByDate(requestDTO.getEmployeeId(), requestDTO.getDate());
 
             if (!workShiftListOfWeek.isEmpty()) {
                 // Suma las horas trabajadas
@@ -150,11 +165,7 @@ public class WorkShiftServiceValidation {
     private void validateMonthlyHours(WorkShiftCreateDTO requestDTO) throws BusinessException {
         if(requestDTO.getHoursWorked() != null) {
             final int MONTHLY_HOURS_LIMIT = 190;
-            LocalDate startOfMonth = Utility.getStartOfMonth(requestDTO.getDate());
-            LocalDate endOfMonth = Utility.getEndOfMonth(requestDTO.getDate());
-
-            List<WorkShift> workShiftListOfMonth = this.workShiftRepository.
-                    findByEmployeeIdAndDateBetween(requestDTO.getEmployeeId(), startOfMonth, endOfMonth);
+            List<WorkShift> workShiftListOfMonth = this.getMonthlyShiftsOfAnEmployeeByDate(requestDTO.getEmployeeId(), requestDTO.getDate());
 
             if (!workShiftListOfMonth.isEmpty()) {
                 int totalHours = this.calculateTotalHoursWorked(workShiftListOfMonth, requestDTO.getHoursWorked());
@@ -166,10 +177,10 @@ public class WorkShiftServiceValidation {
         }
     }   // 4
 
-    private void validateDayOff(LocalDate workShiftDate, Long employeeId) throws BusinessException {
+    private void validateDayOff(Long employeeId, LocalDate workShiftDate) throws BusinessException {
         // Buscar en la fecha especificada todas las jornadas laborales del empleado
         List<WorkShift> workShiftsList = this.workShiftRepository
-                .findByDateAndEmployeeId(workShiftDate, employeeId);
+                .findByEmployeeIdAndDate(employeeId, workShiftDate);
 
         // Verificar si alguna jornada es un "Día libre" segun si es laborable o no
         boolean hasDayOff = workShiftsList.stream()
@@ -179,7 +190,68 @@ public class WorkShiftServiceValidation {
         if (hasDayOff) {
             throw new BusinessException( NotificationMessage.EMPLOYEE_ALREADY_HAS_DAY_OFF );
         }
-    }
+    }   // 5
+
+    private void validateWeeklyExtraShifts(Long employeeId, LocalDate workShiftDate) throws BusinessException {
+        List<WorkShift> weeklyShifts = this.getWeeklyShiftsOfAnEmployeeByDate(employeeId, workShiftDate);
+
+        long extraShiftsCount = weeklyShifts.stream()
+                .filter(workShift -> workShift.getConcept().getName().equalsIgnoreCase("Turno Extra"))
+                .count();
+
+        if (extraShiftsCount >= 3) {
+            throw new BusinessException( NotificationMessage.EMPLOYEE_HAS_3_EXTRA_SHIFTS_THIS_WEEK );
+        }
+    }   // 6
+
+    private void validateWeeklyNormalShifts(Long employeeId, LocalDate workShiftDate) throws BusinessException {
+        List<WorkShift> weeklyShifts = this.getWeeklyShiftsOfAnEmployeeByDate(employeeId, workShiftDate);
+
+        long normalShiftsCount = weeklyShifts.stream()
+                .filter(workShift -> workShift.getConcept().getName().equalsIgnoreCase("Turno Normal"))
+                .count();
+
+        if (normalShiftsCount >= 5) {
+            throw new BusinessException( NotificationMessage.EMPLOYEE_HAS_5_NORMAL_SHIFTS_THIS_WEEK );
+        }
+    }   // 7
+
+    private void validateWeeklyDaysOff(Long employeeId, LocalDate workShiftDate) throws BusinessException {
+        List<WorkShift> weeklyShifts = this.getWeeklyShiftsOfAnEmployeeByDate(employeeId, workShiftDate);
+
+        long daysOffCount = weeklyShifts.stream()
+                .filter(workShift -> workShift.getConcept().getName().equalsIgnoreCase("Día libre"))
+                .count();
+
+        if (daysOffCount >= 2) {
+            throw new BusinessException( NotificationMessage.NO_MORE_DAY_OFFS_AVAILABLE_THIS_WEEK );
+        }
+    }   // 8
+
+    private void validateMonthlyDaysOff(Long employeeId, LocalDate workShiftDate) throws BusinessException {
+        List<WorkShift> monthlyShifts =  this.getMonthlyShiftsOfAnEmployeeByDate(employeeId, workShiftDate);
+
+        long daysOffCount = monthlyShifts.stream()
+                .filter(workShift -> workShift.getConcept().getName().equalsIgnoreCase("Día Libre"))
+                .count();
+
+        if (daysOffCount >= 5) {
+            throw new BusinessException( NotificationMessage.NO_MORE_DAY_OFFS_AVAILABLE_THIS_MONTH );
+        }
+    }   // 9
+
+    private void validateMaxEmployeesPerConceptPerDay(Long conceptId, LocalDate workShiftDate) throws BusinessException {
+        List<WorkShift> shiftsForDateAndConcept = workShiftRepository.findByDateAndConceptId(workShiftDate, conceptId);
+
+        long employeeCount = shiftsForDateAndConcept.stream()
+                .map(WorkShift::getEmployee)
+                .distinct()
+                .count();
+
+        if (employeeCount >= 2) {
+            throw new BusinessException( NotificationMessage.EMPLOYEES_ALREADY_REGISTERED_FOR_CONCEPT_ON_DATE );
+        }
+    }   // 10
 
     private void validateUniqueWorkShiftPerDay(LocalDate date, Long employeeId, String conceptName) throws BusinessException {
         if(this.workShiftRepository.existsByDateAndEmployeeIdAndConceptName(date, employeeId, conceptName)) {
