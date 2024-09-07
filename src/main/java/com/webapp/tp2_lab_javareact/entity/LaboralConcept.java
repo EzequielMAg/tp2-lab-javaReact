@@ -25,5 +25,5 @@ public class LaboralConcept {
     private Integer maximumHours;
 
     @Column(nullable = false)
-    private boolean laborable;
+    private boolean isWorkDay;
 }

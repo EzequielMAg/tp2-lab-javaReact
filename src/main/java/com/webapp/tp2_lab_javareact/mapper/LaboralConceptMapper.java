@@ -13,7 +13,7 @@ public class LaboralConceptMapper {
                 .name(dto.getName())
                 .minimumHours(dto.getMinimumHours())
                 .maximumHours(dto.getMaximumHours())
-                .laborable(dto.isLaborable())
+                .isWorkDay(dto.isWorkDay())
                 .build();
     }
 
@@ -23,7 +23,7 @@ public class LaboralConceptMapper {
                 .name(laboralConcept.getName())
                 .minimumHours(laboralConcept.getMinimumHours())
                 .maximumHours(laboralConcept.getMaximumHours())
-                .laborable(laboralConcept.isLaborable())
+                .isWorkDay(laboralConcept.isWorkDay())
                 .build();
     }
 }

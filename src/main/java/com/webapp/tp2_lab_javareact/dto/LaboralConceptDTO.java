@@ -12,5 +12,5 @@ public class LaboralConceptDTO {
     private String name;
     private Integer minimumHours;
     private Integer maximumHours;
-    private boolean laborable;
+    private boolean isWorkDay;
 }
