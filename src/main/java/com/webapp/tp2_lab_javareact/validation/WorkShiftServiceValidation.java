@@ -95,20 +95,22 @@ public class WorkShiftServiceValidation {
         }
     }
 
+    private int calculateTotalHoursWorked(List<WorkShift> workShiftListOfWeek, Integer hoursWorkedFromRequest) {
+        return workShiftListOfWeek.stream()
+                //.mapToInt(WorkShift::getHoursWorked) // Uso el siguiente para evitar un NullPointerException
+                .mapToInt(shift -> shift.getHoursWorked() != null ? shift.getHoursWorked() : 0)
+                .sum() + hoursWorkedFromRequest;
+    }
+
     private void validateMaxWorkedHoursPerDay(WorkShiftCreateDTO requestDTO) {
         if(requestDTO.getHoursWorked() != null) {
 
             final int MAX_WORKED_HOURS = 14;
-            List<WorkShift> workShiftList = workShiftRepository.
+            List<WorkShift> workShiftListOfDay = workShiftRepository.
                     findByDateAndEmployeeId(requestDTO.getDate(), requestDTO.getEmployeeId());
 
-            if (!workShiftList.isEmpty()) {
-                int totalHours = workShiftList.stream()
-                        //.mapToInt(WorkShift::getHoursWorked) // Uso el siguiente para evitar un NullPointerException
-                        .mapToInt(shift -> shift.getHoursWorked() != null ? shift.getHoursWorked() : 0)
-                        .sum() + requestDTO.getHoursWorked();
-
-                System.out.println(totalHours); // TODO: <<<<<<<<<--------------------------- revisar en consola
+            if (!workShiftListOfDay.isEmpty()) {
+                int totalHours = calculateTotalHoursWorked(workShiftListOfDay, requestDTO.getHoursWorked());
 
                 if (totalHours > MAX_WORKED_HOURS) {
                     throw new BusinessException( NotificationMessage.WORK_HOURS_LIMIT_EXCEEDED );
@@ -129,17 +131,17 @@ public class WorkShiftServiceValidation {
             LocalDate endOfWeek = Utility.getEndOfWeek(workShiftDate);
 
             // Recupera todas las jornadas laborales del empleado en la misma semana
-            List<WorkShift> weeklyShifts = this.workShiftRepository.
+            List<WorkShift> workShiftListOfWeek = this.workShiftRepository.
                     findByEmployeeIdAndDateBetween(employeeId, startOfWeek, endOfWeek);
 
             // Suma las horas trabajadas
-            int totalHours = weeklyShifts.stream()
-                    .mapToInt(shift -> shift.getHoursWorked() != null ? shift.getHoursWorked() : 0)
-                    .sum() + requestDTO.getHoursWorked();
+            if (!workShiftListOfWeek.isEmpty()) {
+                int totalHours = calculateTotalHoursWorked(workShiftListOfWeek, requestDTO.getHoursWorked());
 
-            // Verifica si el total de horas supera las 52 horas
-            if (totalHours > WEEKLY_HOURS_LIMIT) {
-                throw new BusinessException( NotificationMessage.WEEKLY_HOURS_LIMIT_EXCEEDED );
+                // Verifica si el total de horas supera las 52 horas
+                if (totalHours > WEEKLY_HOURS_LIMIT) {
+                    throw new BusinessException( NotificationMessage.WEEKLY_HOURS_LIMIT_EXCEEDED );
+                }
             }
         }
     }
