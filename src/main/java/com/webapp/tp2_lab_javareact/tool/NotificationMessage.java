@@ -24,6 +24,12 @@ public final class NotificationMessage {
     //endregion
 
     public static final String HOURS_WORKED_IS_NOT_REQUIRED = "The concept entered does not require the entry of 'hoursWorked'";
+    public static final String WORK_HOURS_LIMIT_EXCEEDED = "An employee cannot work more than 14 hours in a single day.";
+    public static final String WEEKLY_HOURS_LIMIT_EXCEEDED = "The entered employee exceeds the 52-hour weekly limit.";
+
+
+    public static final String DUPLICATE_SHIFT_FOR_DATE = "The employee already has a shift with this concept registered on the entered date.";
+
 
     //region -----------  CONSTANTS: INVALID ATTRIBUTE MESSAGE  -----------
     public static final String INVALID_NAME = "Only letters are allowed in the 'name' field.";
