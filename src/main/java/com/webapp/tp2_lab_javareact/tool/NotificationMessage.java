@@ -27,6 +27,9 @@ public final class NotificationMessage {
     public static final String WORK_HOURS_LIMIT_EXCEEDED = "An employee cannot work more than 14 hours in a single day.";
     public static final String WEEKLY_HOURS_LIMIT_EXCEEDED = "The entered employee exceeds the 52-hour weekly limit.";
 
+    public static final String MONTHLY_HOURS_LIMIT_EXCEEDED = "The entered employee exceeds the 190-hour monthly limit.";
+
+    public static final String EMPLOYEE_ALREADY_HAS_DAY_OFF = "The entered employee already has a day off on that date.";
 
     public static final String DUPLICATE_SHIFT_FOR_DATE = "The employee already has a shift with this concept registered on the entered date.";
 

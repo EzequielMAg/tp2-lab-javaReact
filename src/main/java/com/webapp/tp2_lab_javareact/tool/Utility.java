@@ -20,4 +20,12 @@ public class Utility {
     public static LocalDate getEndOfWeek(LocalDate date) {
         return date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
     }
+
+    public static LocalDate getStartOfMonth(LocalDate date) {
+        return date.with(TemporalAdjusters.firstDayOfMonth());
+    }
+
+    public static LocalDate getEndOfMonth(LocalDate date) {
+        return date.with(TemporalAdjusters.lastDayOfMonth());
+    }
 }

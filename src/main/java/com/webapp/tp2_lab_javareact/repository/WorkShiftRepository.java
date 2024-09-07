@@ -15,5 +15,4 @@ public interface WorkShiftRepository extends JpaRepository<WorkShift, Long> {
     Boolean existsByDateAndEmployeeIdAndConceptName(LocalDate date, Long employeeId, String conceptName);
 
     List<WorkShift> findByEmployeeIdAndDateBetween(Long employeeId, LocalDate startDate, LocalDate endDate);
-
 }
